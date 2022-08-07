@@ -1,0 +1,64 @@
+.sidebar{
+    display:flex;
+    margin: 0;
+    height:100%;
+    justify-content:flex-start;
+    padding:0;
+    position: relative;
+    background: transparent;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+
+    .firstbar{
+        display:flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color:black;
+        width:100px;
+        z-index:10;
+        padding: 1rem;
+        position: relative;
+        height: 100%;
+        left: 0;
+
+        & > *{
+            text-align: center;
+        }
+    }
+
+    .secondbar{
+        display:flex;
+        flex-direction: column; 
+        align-items: flex-end;
+        background-color:gray;
+        position: relative;
+        z-index: 10;
+        height: 100%;
+        left: 0;
+        width:300px;
+
+        .bar_inner{
+            display:flex;
+            padding: 1rem;
+            flex-direction:row;
+            width:100%;
+        }
+    }
+
+    .expandbar{
+        width:20px;
+        height:100%;
+        align-self:flex-end;
+        cursor:pointer;
+        z-index: 10;
+        position: absolute;
+        right: 0;
+        background: #707070;
+
+        &:hover{
+            background-color: #3e3e3e;
+        }
+    }
+}
+

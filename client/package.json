@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-bootstrap": "^0.32.30",
+    "bootstrap": "^5.2.0",
     "next": "12.2.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "18.2.0",
+    "react-draggable": "^4.4.5",
+    "sass": "^1.54.3"
   },
   "devDependencies": {
     "@types/node": "18.6.2",
@@ -19,6 +24,16 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.3",
+    "prettier": "^2.7.1",
     "typescript": "4.7.4"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid",
+    "singleQuote": true
   }
 }
