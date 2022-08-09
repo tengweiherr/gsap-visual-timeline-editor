@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
     Container,
     Navbar,
@@ -7,10 +7,16 @@ import {
     Row,
     Col
 } from "react-bootstrap";
+import { Object } from "../types";
 // import "../styles/sidebar.scss";
 import styles from "../styles/sidebar.module.scss";
 
-const SideBar = () => {
+type Props = {
+    selectedObject: Object|null;
+    setSelectedObject: Dispatch<SetStateAction<Object|null>>;
+}
+
+const SideBar = ({selectedObject,setSelectedObject}:Props) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
@@ -28,6 +34,7 @@ const SideBar = () => {
         <div className={`${styles.secondbar} ${isOpen === true ? "opened" : "closed"}`}>
             <div className={`${styles.bar_inner} ${isOpen === true ? "inner_opened" : "inner_closed"}`}>
                 <p>Object Class Name</p>
+                <p>{selectedObject?.positionX.toString()}</p>
             </div>
             <div className={styles.expandbar} onClick={toggleSidebar}>
             </div>
