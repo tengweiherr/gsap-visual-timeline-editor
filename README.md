@@ -1,10 +1,10 @@
-## *IN PROGRESS* - Web-based GSAP Timeline Visual Editor
+## *IN PROGRESS* - :art: Web-based GSAP Timeline Visual Editor
 
 Version: Beta 1.0
 
 Development started at: 1st August 2022
 
-## Introduction
+## :wave: Introduction
 It is a single page application (SPA) that:
 - visualizes GSAP animation editing (GSAP GUI)
 - preview the animation without coding
@@ -19,12 +19,12 @@ Tech Stack:
 3. Node.js
 4. MongoDB
 
-## Objectives:
+## :page_with_curl: Objectives:
 - simplify the process of creating GSAP timeline based animation
 - promote GSAP
 - earn side income with Google AdSense
 
-## Functional requirements:
+## :briefcase: Functional requirements:
 MVP
 1. Create/edit timeline based animation
 2. Able to animate heading, text and image 
@@ -40,13 +40,13 @@ Next stage
 5. Available for Vanilla JavaScript and React
 6. Pre-built elements to animate
 
-## Non-functional requirements:
+## :briefcase: Non-functional requirements:
 1. High SEO performance
 2. Responsive design
 3. Animation duration limit up to 1 minutes
 4. Objects to animate limit up to 99 layers
 
-## Similar applications on market:
+## :eyes: Similar applications on market:
 1. Adobe Premiere Pro
 2. Canva
 3. Draw.io
