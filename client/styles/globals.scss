@@ -78,7 +78,7 @@ p{
 }
 
 .closed{
-  width:50px !important;
+  width:10px !important;
 }
 
 .opened{
@@ -91,6 +91,17 @@ p{
 
 .inner_opened{
   opacity: 100% !important;
+}
+
+a.active{
+  color:greenyellow;
+  &:hover{
+    color:greenyellow !important;
+  }
+}
+
+tr.active{
+  background-color:#4f4f4f;
 }
 
 @media (max-width: 600px) {

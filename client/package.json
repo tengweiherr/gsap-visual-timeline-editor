@@ -9,13 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.4",
     "@types/react-bootstrap": "^0.32.30",
+    "@types/react-color": "^3.0.6",
     "bootstrap": "^5.2.0",
     "next": "12.2.3",
+    "next-redux-wrapper": "^7.0.5",
     "react": "18.2.0",
     "react-bootstrap": "^2.5.0",
+    "react-color": "^2.19.3",
     "react-dom": "18.2.0",
     "react-draggable": "^4.4.5",
+    "react-redux": "^8.0.2",
     "sass": "^1.54.3"
   },
   "devDependencies": {

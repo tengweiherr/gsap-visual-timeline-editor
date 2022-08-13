@@ -3,34 +3,45 @@ import {
     Container,
     Row,
     Col,
-    Button
+    Button,
+    Form
 } from "react-bootstrap";
 import SideBar from "./sidebar";
 import Draggable, { DraggableData, DraggableEventHandler } from "react-draggable";
-import { Object, Tween, Inherit, Repeat, Yoyo } from "../types";
+import { Timeline, Object, Tween, Inherit, Repeat, Yoyo } from "../types";
+import { createObject, updateObject, deleteObject } from "../store/slices/objectSlice";
+import { updateSelected } from "../store/slices/selectedSlice";
+import { updateTimeline } from "../store/slices/timelineSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../store/store";
+import Image from "next/image";
+import square from "../assets/shapes/square.svg";
+import test from "../assets/shapes/test.png";
 
 const Workspace = () => {
 
     const objectId = useId();
 
-    const [objects, setObjects] = useState<Array<Object>>([{
-        objectId: `${objectId}-${new Date()}`,
-        classname: "your-class-name",
-        createdAt: new Date(),
-        url: "",
-        positionX: 0,
-        positionY: 0,
-        width: 100,
-        height: 100,
-        defaultDuration: 5
-    }]);
-
-    const [selectedObject, setSelectedObject] = useState<Object|null>(null);
+    // const [objects, setObjects] = useState<Array<Object>>([{
+    //     objectId: objectId,
+    //     classname: "your-class-name",
+    //     url: "",
+    //     positionX: 0,
+    //     positionY: 0,
+    //     width: 100,
+    //     height: 100,
+    //     defaultDuration: 5
+    // }]);
     
-    const [timeline, setTimeline] = useState<number>(15);
+    const timeline:Timeline = useSelector<AppState, Timeline>((state)=>state.timeline);
+    const objects:Array<Object> = useSelector<AppState, Array<Object>>((state)=>state.objects);
+    const selectedObject:Object|null = useSelector<AppState, Object|null>((state)=>state.selected);
+    const dispatch = useDispatch();
+
+    const [tab, setTab] = useState<string>("Timeline");
 
     const [initialPos, setInitialPos] = useState(null);
-    const [initialSize, setInitialSize] = useState(null);
+    const [initialSize, setInitialSize] = useState(null);    
 
     // const initial = (e) => {
         
@@ -48,47 +59,55 @@ const Workspace = () => {
     //     resizable.style.width = `${parseInt(initialSize) + parseInt(e.clientX - initialPos)}px`;
       
     // }
+    
 
     const addObject = () => {
-      setObjects((prev)=>[...prev, {
-        objectId: `${objectId}-${new Date()}`,
-        classname: "your-class-name",
-        createdAt: new Date(),
-        url: "",
-        positionX: 0,
-        positionY: 0,
-        width: 100,
-        height: 100,
-        defaultDuration: 5
-    }]);
-    }
-
-    const updateObjects = (dataToUpdate:DraggableData) => {
-        const newState = objects.map(obj => {
-            //if id matches, update property
-            if (obj.objectId === selectedObject?.objectId) {
-              return {...obj, positionX: dataToUpdate.x, positionY: dataToUpdate.y};
-            }
-            //otherwise return object as is
-            return obj;
-          });
-      
-          setObjects(newState);        
+        const adding:Object = {
+            objectId: `${objectId}-${new Date().getTime().toString()}`,
+            classname: "your-class-name",
+            text: {
+                style:"h1",
+                content: "Hello world!"
+            },
+            shape: undefined,
+            url: undefined,
+            positionX: 0,
+            positionY: 0,
+            width: 300,
+            height: 100,
+            fill:"#000000",
+            defaultDuration: 5
+        }
+        dispatch(createObject(adding))
+        dispatch(updateSelected(adding));
+        setTab("Object");
     }
 
     const canvaOnDrag:DraggableEventHandler = (e, data) => {
         let updating = selectedObject ? {...selectedObject, positionX:data.x, positionY:data.y} : null;
-        setSelectedObject(updating);
+        dispatch(updateSelected(updating));
+        setTab("Object");
     }
 
     const canvaOnStop:DraggableEventHandler = (e, data) => {
-      updateObjects(data);
+
+        const newState = objects.map(obj => {
+            //if id matches, update property
+            if (obj.objectId === selectedObject?.objectId) {
+              return {...obj, positionX: data.x, positionY: data.y};
+            }
+            //otherwise return object as is
+            return obj;
+          });
+
+          dispatch(updateObject(newState));
+          setTab("Object");
     }
 
 
   return (
         <>   
-            <SideBar selectedObject={selectedObject} setSelectedObject={setSelectedObject}/>
+            <SideBar addObject={addObject} tab={tab} setTab={setTab}/>
 
             <div style={{
             height: "100%",
@@ -124,33 +143,47 @@ const Workspace = () => {
                     }}>
                         {objects && objects.map((item,index)=>(
                             <Draggable 
+                            key={item.objectId}
                             bounds=".canvaParent"
                             axis="both"
-                            onMouseDown={()=>{setSelectedObject(item)}}
+                            onMouseDown={()=>{dispatch(updateSelected(item))}}
                             onDrag={canvaOnDrag}
                             onStop={canvaOnStop}
                             defaultPosition={{x: 0, y: 0}}>
-                                <div 
-                                id={item.objectId}
-                                key={item.objectId}
-                                style={{
-                                    width:item.width,
-                                    height:item.height,
-                                    backgroundColor:"yellow",
-                                    position:"absolute"
-                                    }}>
+                                {item.text?.style === "h1" && 
                                     <div 
-                                    className="resize"
+                                    id={item.objectId}
                                     style={{
-                                        width:20,
-                                        height:20,
-                                        backgroundColor:"black",
+                                        width:item.width,
+                                        height:item.height,
                                         position:"absolute",
-                                        right:0,
-                                        bottom:0,
-                                        zIndex:999
-                                        }}></div>
-                                </div>
+                                        color:item.fill
+                                    }}>
+                                        <h1>{item.text.content}</h1>
+                                    </div>
+                                }
+                                {/* {item.shape && 
+                                <div 
+                                    id={item.objectId}
+                                    style={{
+                                        width:item.width,
+                                        height:item.height,
+                                        backgroundColor:"yellow",
+                                        position:"absolute"
+                                        }}>
+                                        <div 
+                                        className="resize"
+                                        style={{
+                                            width:20,
+                                            height:20,
+                                            backgroundColor:"black",
+                                            position:"absolute",
+                                            right:0,
+                                            bottom:0,
+                                            zIndex:999
+                                            }}></div>
+                                    </div>                                
+                                } */}
                             </Draggable>   
                         ))}
  
@@ -254,7 +287,7 @@ const Workspace = () => {
                                     marginRight:12,
                                     marginBottom:3
                                 }}>
-                                    {[...Array(timeline+1)].map((item,index)=>{
+                                    {[...Array(timeline.duration+1)].map((item,index)=>{
 
                                         const rendered = (index%5===0) ? 
                                             <div key={`timestamp-${index}`} style={{
@@ -276,8 +309,14 @@ const Workspace = () => {
                                     })}
                                 </th> 
                             </tr>
-                                {objects && objects.map((item:any,index:number)=>(
-                                    <tr key={`row-${index}`}>
+                                {objects && objects.map((item:Object|any,index:number)=>(
+                                    <tr key={`row-${index}`}
+                                    className={`${selectedObject?.objectId===item.objectId && "active"}`} 
+                                    onMouseDown={()=>{
+                                        dispatch(updateSelected(item));
+                                        setTab("Object");
+                                    }}
+                                    >
                                         <td style={{
                                             minWidth:200,
                                             padding:"4px 8px"
@@ -302,11 +341,11 @@ const Workspace = () => {
                                                     <Draggable 
                                                     bounds="parent" 
                                                     axis="x"
-                                                    grid={[(((80*10)/timeline)/5),0]}
+                                                    grid={[(((80*10)/timeline.duration)/5),0]}
                                                     >
                                                     <div style={{
                                                         backgroundColor:"#56910a",
-                                                        width:(item.duration ? (item.duration) : (item.defaultDuration))*((83*10)/timeline),
+                                                        width:(item.duration ? (item.duration) : (item.defaultDuration))*((83*10)/timeline.duration),
                                                         height:20,
                                                         borderRadius:20,
                                                         border:"3px rgba(0,0,0,0.5)",
