@@ -1,5 +1,9 @@
 ## *IN PROGRESS* - Web-based GSAP Timeline Visual Editor
 
+Version: Beta 1.0
+
+Development started at: 1st August 2022
+
 ## Introduction
 It is a single page application (SPA) that:
 - visualizes GSAP animation editing (GSAP GUI)
