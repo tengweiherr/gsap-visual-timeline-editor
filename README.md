@@ -1,7 +1,7 @@
 ## *IN PROGRESS* - Web-based GSAP Timeline Visual Editor
 
 ## Introduction
-It is a simple page application (SPA) that:
+It is a single page application (SPA) that:
 - visualizes GSAP animation editing (GSAP GUI)
 - preview the animation without coding
 - enables users to generate GSAP JavaScript code after creating timeline-based animation
